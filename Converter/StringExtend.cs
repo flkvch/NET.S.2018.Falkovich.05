@@ -17,7 +17,6 @@ namespace Converter
         /// <exception cref="OverflowException">Number is bigger than UInt.MaxValue.</exception>
         public static uint StringToUInt32(this string numberString, int radix)
         {
-            long result = 0;
             if (numberString == "0")
             {
                 return 0;
@@ -26,6 +25,7 @@ namespace Converter
             Notation notation = new Notation(radix);
             numberString = numberString.ToUpper();
             int length = numberString.Length;
+            long result = 0;
             for (int i = 0; i < length; i++)
             {              
                 int numberOfSymbol = notation.Symbols.IndexOf(numberString[i]);
@@ -34,8 +34,15 @@ namespace Converter
                     throw new ArgumentException(nameof(radix));
                 }
 
-                
-                result += numberOfSymbol * (long)Math.Pow(notation.Radix, length - 1 - i);
+                if (i == 0)
+                {
+                    result += numberOfSymbol;
+                }
+                else
+                {
+                    result = notation.Radix * result + numberOfSymbol;
+                }
+
             }
 
             if (result > uint.MaxValue)
