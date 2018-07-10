@@ -8,15 +8,21 @@ namespace Converter
     public static class StringExtend
     {
         /// <summary>
-        /// Converts integer positive number from its string representation to <see cref="UInt32"/>.
+        /// Converts integer positive number from its string representation to <see cref="Int32"/>.
         /// </summary>
         /// <param name="numberString">String representation of number.</param>
         /// <param name="radix">The radix of the number.</param>
         /// <returns>The result of converting.</returns>
         /// <exception cref="ArgumentException">radix</exception>
         /// <exception cref="OverflowException">Number is bigger than UInt.MaxValue.</exception>
-        public static uint StringToUInt32(this string numberString, int radix)
+        /// <exception cref="ArgumentNullException">String is null.</exception>
+        public static int StringToInt32(this string numberString, int radix)
         {
+            if (numberString == null)
+            {
+                throw new ArgumentNullException(nameof(numberString));
+            }
+
             if (numberString == "0")
             {
                 return 0;
@@ -25,7 +31,7 @@ namespace Converter
             Notation notation = new Notation(radix);
             numberString = numberString.ToUpper();
             int length = numberString.Length;
-            long result = 0;
+            int result = 0;
             for (int i = 0; i < length; i++)
             {              
                 int numberOfSymbol = notation.Symbols.IndexOf(numberString[i]);
@@ -40,17 +46,11 @@ namespace Converter
                 }
                 else
                 {
-                    result = notation.Radix * result + numberOfSymbol;
+                    result = checked((notation.Radix * result) + numberOfSymbol);
                 }
-
             }
 
-            if (result > uint.MaxValue)
-            {
-                throw new OverflowException("Number is bigger than UInt.MaxValue.");
-            }
-
-            return (uint)result;
+            return result;
         }
 
         private struct Notation

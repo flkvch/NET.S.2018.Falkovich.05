@@ -15,24 +15,24 @@ namespace Converter.Tests
         [TestCase("10", 5, ExpectedResult = 5)]
         [TestCase("100", 10, ExpectedResult = 100)]
         [TestCase("0", 6, ExpectedResult = 0)]
-        [TestCase("11111111111111111111111111111111", 2, ExpectedResult = uint.MaxValue)]
-        [TestCase("32244002423140", 5, ExpectedResult = uint.MaxValue)]
-        [TestCase("37777777777", 8, ExpectedResult = uint.MaxValue)]
-        public static uint StringToUInt32_ValidCases(this string number, int radix)
-    => StringExtend.StringToUInt32(number, radix);
+        [TestCase("1111111111111111111111111111111", 2, ExpectedResult = int.MaxValue)]
+        [TestCase("13344223434042", 5, ExpectedResult = int.MaxValue)]
+        [TestCase("17777777777", 8, ExpectedResult = int.MaxValue)]
+        public static int StringToInt32_ValidCases(this string number, int radix)
+    => StringExtend.StringToInt32(number, radix);
 
         [TestCase("1AeF101", 2)]
         [TestCase("764241", 20)]
         [TestCase("SA123", 2)]
-        public static void StringToUint32_ArgumentExeption(this string number, int radix)
-    => Assert.Throws<ArgumentException>(() => StringExtend.StringToUInt32(number, radix));
+        public static void StringToInt32_ArgumentExeption(this string number, int radix)
+    => Assert.Throws<ArgumentException>(() => StringExtend.StringToInt32(number, radix));
 
-        [TestCase("100000000000000000000000000000000", 2)]
-        [TestCase("102002022201221111211", 3)]
-        [TestCase("10000000000000000", 4)]
+        [TestCase("10000000000000000000000000000000", 2)]
+        [TestCase("12112122212110202102", 3)]
+        [TestCase("2000000000000000", 4)]
         [TestCase("111111111111111111111111111111111111111111111", 2)]
-        [TestCase("100000000", 16)]
-        public static void StringToUint32_OverFlowExeption(this string number, int radix)
-    => Assert.Throws<OverflowException>(() => StringExtend.StringToUInt32(number, radix));
+        [TestCase("80000000", 16)]
+        public static void StringToInt32_OverFlowExeption(this string number, int radix)
+    => Assert.Throws<OverflowException>(() => StringExtend.StringToInt32(number, radix));
     }  
 }
